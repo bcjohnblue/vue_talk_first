@@ -2,6 +2,9 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 
+import Table from "./views/Table.vue";
+import Table2 from "./views/Table2.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -10,6 +13,16 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+    {
+      path: "/table",
+      name: "Table",
+      component: Table
+    },
+    {
+      path: "/table2",
+      name: "Table2",
+      component: Table2
     },
     {
       path: "/about",
