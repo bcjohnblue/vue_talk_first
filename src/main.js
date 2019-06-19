@@ -5,16 +5,44 @@ import store from "./store";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+import locale from "element-ui/lib/locale/lang/en";
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale });
 
 import axios from "axios";
+
+import VueI18n from "vue-i18n";
+
+Vue.use(VueI18n);
+
+// Ready translated locale messages
+const messages = {
+  en: {
+    message: {
+      name: "Name"
+    }
+  },
+  tw: {
+    message: {
+      name: "姓名"
+    }
+  }
+};
+
+// Create VueI18n instance with options
+const i18n = new VueI18n({
+  locale: "en", // set locale
+  messages // set locale messages
+});
+console.log(i18n);
 
 // const instance = axios.create({
 //   baseURL: 'https://jsonplaceholder.typicode.com/todoss/1',
 //   timeout: 10000,
 //   headers: {}
 // });
+
+axios.defaults.baseURL = "https://my-json-server.typicode.com/bcjohnblue/demo";
 
 // Add a request interceptor
 axios.interceptors.request.use(
@@ -71,11 +99,11 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           error.message = "未經過認證，請重新登入";
-          // store.dispatch('logout');
+          // store.dispatch('logout');  => 導向至登入頁面
           break;
         case 404:
           error.message = "請求網址不存在";
-          // store.dispatch('logout');
+          // store.dispatch('logout'); => 顯示錯誤訊息
           break;
       }
     }
@@ -89,23 +117,34 @@ axios.interceptors.response.use(
   }
 );
 
-axios
-  .get("https://my-json-server.typicode.com/bcjohnblue/demo/posts")
-  .then(response => {
-    console.log("%c Response in callback", "color: blue", response);
-  })
-  .catch(error => {
-    console.error("%c Error in callback", "color: blue", error);
-  });
+// axios
+//   .get("https://my-json-server.typicode.com/bcjohnblue/demo/posts")
+//   .then(response => {
+//     console.log("%c Response in callback", "color: blue", response);
+//   })
+//   .catch(error => {
+//     console.error("%c Error in callback", "color: blue", error);
+//   });
+
+// axios
+//   .get("https://my-json-server.typicode.com/bcjohnblue/demo/anotherPosts")
+//   .then(response => {
+//     console.log("%c Response in callback", "color: blue", response);
+//   })
+//   .catch(error => {
+//     console.error("%c Error in callback", "color: blue", error);
+//   });
 
 Vue.config.productionTip = false;
 
 // window.axios = axios; => axios.get(url)
 // global.axios = axios; => axios.get(url)
 // Vue.prototype.$axios = axios; => this.$axios.get(url)
+Vue.prototype.$axios = axios;
 
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount("#app");
